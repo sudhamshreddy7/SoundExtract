@@ -7,6 +7,7 @@ RUN apt-get update \
 
 WORKDIR /app
 COPY ./requirements.txt /app
+RUN apt-get install -y pkg-config
 RUN pip install --no-cache-dir --requirement /app/requirements.txt
 COPY . /app
 
