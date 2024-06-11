@@ -12,9 +12,8 @@ def main():
     fs_videos = gridfs.GridFS(db_videos)
     fs_mp3s = gridfs.GridFS(db_mp3)
     #rabbitmq
-    connection = pika.BaseConnection(
-        pika.ConnectionParameters(host="rabbitmq")
-    )
+                 
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=str("rabbitmq")))
     channel = connection.channel()
     def callback(channel , method, properties, body):
         err = to_mp3.start(body,fs_videos,fs_mp3s,channel)
@@ -24,7 +23,7 @@ def main():
             channel.basic_ack(delivery_tag = method.delivery_tag)
 
     channel.basic_consume(
-        queue=os.environ.get("VIDOE_QUEUE"),
+        queue=os.environ.get("VIDEO_QUEUE"),
         on_message_callback=callback
     )
     print("Waiting for message")
