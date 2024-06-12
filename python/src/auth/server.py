@@ -51,7 +51,8 @@ def validate():
         decoded = jwt.decode(
             encoded_jwt, os.environ.get("JWT_SECRET"), algorithms=["HS256"]
         )
-    except:
+    except Exception as ex:
+        print(ex)
         return "not authorized", 403
 
     return decoded, 200

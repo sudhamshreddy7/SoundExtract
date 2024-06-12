@@ -28,5 +28,6 @@ def start(message,fs_videos,fs_mp3s,channel):
             )
         )
     except Exception as ex:
+        print(ex)
         fs_mp3s.delete(fid)
         return "failed to push into queue mp3"

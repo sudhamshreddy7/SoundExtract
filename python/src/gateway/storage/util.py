@@ -4,8 +4,13 @@ import pika.spec
 
 def upload(f,fs,channel,access):
     try:
+        print(str(f))
+        print(str(fs))
         fid = fs.put(f)
+        print(str(fid))
     except Exception as err:
+        print("hi")
+        print(err)
         return "internal error",500
     message = {
         "video_fid":str(fid),
@@ -13,6 +18,7 @@ def upload(f,fs,channel,access):
         "username":access["username"],
     }
     try:
+        print("trying to upload in storage util/n")
         channel.basic_publish(
             exchange = "",
             routing_key = "video",
@@ -25,6 +31,7 @@ def upload(f,fs,channel,access):
             )
         )
     except Exception as err:
+        print(err)
         fs.delete(fid)
         return "internal queue error", 500
     

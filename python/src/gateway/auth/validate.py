@@ -1,5 +1,6 @@
 import os,requests
 def token(request):
+    print("hellow")
     if not "Authorization" in request.headers:
         return None,("missing credentials",401)
     token = request.headers["Authorization"]
