@@ -11,7 +11,7 @@ def start(message,fs_videos,fs_mp3s,channel):
     tf.write(output.read())
     audio = moviepy.editor.VideoFileClip(tf.name).audio
     tf.close()
-    path = tempfile.gettempdir() + f"/{message['video_fid']}".mp3
+    path = tempfile.gettempdir() + f"/{str(message['video_fid'])}"+str(".mp3")
     audio.write_audiofile(path)
     file = open(path,"rb")
     fid = fs_mp3s.put(file.read())
