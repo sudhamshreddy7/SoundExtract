@@ -56,11 +56,32 @@ def upload():
             return "Not authorized", 401
     except Exception as e:
         logger.error(f"Error during file upload: {e}")
-        return "Internal Server Error", 500
+        return "Internal Server Error", 500 
 
 @server.route("/download", methods=["GET"])
 def download():
-    pass
+    try:
+        access, err = validate.token(request)
+        if err:
+            return err
+
+        access = json.loads(access)
+
+        if access["admin"]:
+            fid_string = request.args.get("fid")
+            if not fid_string:
+                return "Fid required" ,400
+            try:
+                out = fs_mp3s.get(ObjectId(fid_string))
+                return send_file(out,download_name=f'{fid_string}'+str('.mp3'))
+            except Exception as e:
+                print(e)
+                return "internal server error",500
+
+        return "Not authorized", 401
+    except Exception as a:
+        print(a)
+        return "internal server error",500
 
 if __name__ == "__main__":
     server.run(host="0.0.0.0", port=8080)

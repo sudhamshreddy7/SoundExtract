@@ -13,5 +13,6 @@ RUN pip install --no-cache-dir --requirement /app/requirements.txt
 COPY . /app
 
 EXPOSE 8080
+EXPOSE 27017
 
 CMD ["python3", "server.py" ]
